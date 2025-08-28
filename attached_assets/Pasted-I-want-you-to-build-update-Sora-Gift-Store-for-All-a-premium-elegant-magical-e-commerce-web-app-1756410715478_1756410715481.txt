@@ -1,0 +1,115 @@
+I want you to build/update Sora – Gift Store for All, a premium, elegant, magical e-commerce web app using React and Firebase for database management. Follow these detailed specifications exactly:
+
+1. General Requirements
+
+The app must be unique, functional, and premium in look and feel.
+
+Use React (with functional components & hooks), TailwindCSS for styling, and Firebase as the backend/database for products, user info, orders, and wishlist.
+
+The site should be responsive on mobile, tablet, and desktop with smooth transitions.
+
+All pages, components, and structure should remain organized and clean.
+
+2. Theme & Design
+
+Primary colors: Golden (#FFD700), Burgundy (#AC1C1C), Cream (#F5EBDD), White (#FFFFFF).
+
+Dark mode: Classic black background (#080808) with all text, cards, buttons, and components readable and consistent.
+
+Typography:
+
+Headings → Playfair Display (serif, premium look)
+
+Body → Montserrat (clean sans-serif, readable)
+
+Layout & UI:
+
+Glassy card layouts for products and sections
+
+Elegant spacing, modern margins, smooth rounded corners
+
+Hover effects: glowing borders, subtle scale-up on cards/buttons
+
+Animations & Effects:
+
+Background sparkle/falling confetti animations must be present and functional in both light and dark modes
+
+Use animations like float, shimmer, heartbeat, blink for premium feel
+
+Smooth transitions for hover, scroll, and page navigation
+
+3. Dark Mode Requirements
+
+Implement full dark mode toggle.
+
+Background: classic black (#080808).
+
+Text, buttons, cards, and gradients must adjust for readability.
+
+All animations, including sparkle/confetti, must display correctly in dark mode.
+
+Golden accents should remain visible in dark mode.
+
+4. Firebase Integration
+
+Store all products, categories, users, and orders in Firebase Firestore.
+
+Implement real-time updates for inventory and cart items.
+
+Include user authentication with Firebase Auth (email/password & Google login).
+
+Wishlist, cart, and order history should persist in Firebase.
+
+Ensure security rules in Firebase for protected data access.
+
+5. Features & Functionality
+
+Home Page: Hero section with sparkling golden highlights, featured products carousel, background confetti animations.
+
+Product Listing: Elegant cards with hover effects, quick view popup, add-to-cart button, and ratings.
+
+Product Detail Page: Larger images, golden accents, description, reviews, add-to-cart/wishlist.
+
+Cart Page: Interactive, editable items, price summary, checkout button, and Firebase integration.
+
+Checkout Page: Capture user info, order summary, and save orders in Firebase.
+
+User Account Page: Wishlist, order history, editable profile, dark mode toggle.
+
+Search & Filters: Category filters, search by name, price, or popularity.
+
+Animations Everywhere: Smooth hover, click, and scroll animations.
+
+6. Responsiveness & Accessibility
+
+Fully responsive design for mobile, tablet, and desktop.
+
+Text and interactive elements should have sufficient contrast in dark and light mode.
+
+Buttons and clickable areas must be accessible (minimum 44px target size).
+
+7. Premium & Magical Feel
+
+Maintain celebration & magical vibe like FNP (premium gift store inspiration).
+
+Smooth glowing hover effects on all interactive elements.
+
+Subtle sparkle/falling confetti background animation for premium feel.
+
+Elegant card shadows, smooth transitions, and polished spacing.
+
+8. Deliverables
+
+Fully functional React + Firebase web app with premium golden theme and dark mode.
+
+All Firebase interactions working (auth, product CRUD, cart, wishlist, orders).
+
+Responsive and polished UI/UX.
+
+Preserve all animations from the previous project with sparkle/confetti effect in both modes.
+
+Maintain premium typography: Playfair Display for headings, Montserrat for body.
+
+Full light/dark theme support, no layout breaks, readability perfect in both modes.
+
+Summary: Your task is to build/update Sora from 0 to 100, exactly like my previous beloved project in terms of theme, animations, and elegance, but as a functional React e-commerce app with Firebase backend. Preserve structure, functionality, and premium feel, with full dark mode support and all animations intact
