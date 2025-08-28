@@ -13,7 +13,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ open, onOpenChange }: AuthModalProps) {
-  const { signIn, signUp, signInWithGoogle } = useAuth();
+  const { signIn, signUp } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('signin');
@@ -86,19 +86,11 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
   };
 
   const handleGoogleSignIn = async () => {
-    setLoading(true);
-    try {
-      await signInWithGoogle();
-      onOpenChange(false);
-    } catch (error) {
-      toast({
-        title: 'Google sign in failed',
-        description: 'Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
-      setLoading(false);
-    }
+    toast({
+      title: 'Google Sign In',
+      description: 'Google sign in is not available in demo mode.',
+      variant: 'destructive',
+    });
   };
 
   return (
