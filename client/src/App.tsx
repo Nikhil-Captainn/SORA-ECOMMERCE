@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SparkleBackground } from "@/components/animations/SparkleBackground";
 import { CartSidebar } from "@/components/cart/CartSidebar";
 import { ConfettiBackground } from "@/components/animations/ConfettiBackground";
+import { Analytics } from "@vercel/analytics/react"
 import Home from "@/pages/Home";
 import Products from "@/pages/Products";
 import ProductDetail from "@/pages/ProductDetail";
@@ -62,12 +63,14 @@ function App() {
                 
                 {/* Toast Notifications */}
                 <Toaster />
+                <Analytics />
               </div>
             </TooltipProvider>
           </CartProvider>
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
+
   );
 }
 

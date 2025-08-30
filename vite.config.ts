@@ -19,13 +19,13 @@ export default defineConfig({
   },
   root: resolve(__dirname, "client"),
   build: {
-    outDir: resolve(__dirname, "dist/public"),
+    outDir: resolve(__dirname, "dist"), // Corrected outDir
     emptyOutDir: true
   },
   server: {
     fs: {
       strict: true,
       deny: ["**/.*"]
-    }
+    },
   }
 });
