@@ -1,3 +1,5 @@
+// D:\Gift Shop E-Commerce\SoraGold\SoraGold\client\src\pages\Checkout.tsx
+
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { ArrowLeft, CreditCard, Truck, Shield, Check } from 'lucide-react';
@@ -10,6 +12,17 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { Helmet } from 'react-helmet'; // New import for page title
+
+// You will need to install this package
+import axios from 'axios';
+
+// Declare a global type for the Razorpay window object
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
 
 export default function Checkout() {
   const { items, subtotal, clearCart } = useCart();
@@ -17,7 +30,7 @@ export default function Checkout() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [step, setStep] = useState<'shipping' | 'payment' | 'review'>('shipping');
+  const [step, setStep] = useState<'shipping' | 'review'>('shipping');
 
   const [shippingInfo, setShippingInfo] = useState({
     firstName: user?.displayName?.split(' ')[0] || '',
@@ -28,133 +41,128 @@ export default function Checkout() {
     city: '',
     state: '',
     zipCode: '',
-    country: 'United States',
+    country: 'India', // Changed to India for Razorpay currency
   });
 
-  const [paymentInfo, setPaymentInfo] = useState({
-    cardNumber: '',
-    expiryDate: '',
-    cvv: '',
-    nameOnCard: '',
-    billingAddressSame: true,
-  });
-
-  const [billingInfo, setBillingInfo] = useState({
-    address: '',
-    city: '',
-    state: '',
-    zipCode: '',
-    country: 'United States',
-  });
-
-  if (!user) {
-    return (
-      <div className="pt-20" data-testid="checkout-signin-required">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <div className="text-6xl mb-4 opacity-50">🔒</div>
-          <h1 className="text-2xl font-serif font-bold text-foreground mb-4">
-            Sign In Required
-          </h1>
-          <p className="text-muted-foreground mb-8">
-            Please sign in to proceed with checkout.
-          </p>
-          <Link href="/cart">
-            <Button className="btn-primary" data-testid="button-back-to-cart">
-              Back to Cart
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  if (items.length === 0) {
-    return (
-      <div className="pt-20" data-testid="checkout-empty-cart">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <div className="text-6xl mb-4 opacity-50">🛒</div>
-          <h1 className="text-2xl font-serif font-bold text-foreground mb-4">
-            Your cart is empty
-          </h1>
-          <p className="text-muted-foreground mb-8">
-            Add some items to your cart before proceeding to checkout.
-          </p>
-          <Link href="/products">
-            <Button className="btn-primary" data-testid="button-shop-now">
-              Shop Now
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // Your Razorpay key ID
+  const RAZORPAY_KEY_ID = 'rzp_live_RBb0XWBixI5BZR';
 
   const tax = subtotal * 0.08;
   const shipping = subtotal > 75 ? 0 : 9.99;
   const total = subtotal + tax + shipping;
 
-  const handleShippingSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep('payment');
+  // Function to load the Razorpay script
+  const loadRazorpayScript = () => {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.onload = () => resolve(true);
+      script.onerror = () => reject(new Error("Razorpay SDK failed to load. Are you online?"));
+      document.body.appendChild(script);
+    });
   };
 
-  const handlePaymentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep('review');
-  };
-
-  const handleOrderSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsProcessing(true);
-
-    try {
-      // Simulate order processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Clear cart and redirect to success page
-      clearCart();
+  const handlePayment = async () => {
+    if (!user || !user.email) {
       toast({
-        title: 'Order placed successfully!',
-        description: 'Thank you for your purchase. You will receive a confirmation email shortly.',
+        title: "Authentication Required",
+        description: "Please sign in to proceed with the payment.",
+        variant: "destructive"
       });
-      
-      setLocation('/account?tab=orders');
-    } catch (error) {
+      return;
+    }
+
+    if (items.length === 0) {
       toast({
-        title: 'Order failed',
-        description: 'There was an error processing your order. Please try again.',
-        variant: 'destructive',
+        title: "Cart Empty",
+        description: "Your cart is empty. Please add items to proceed.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      await loadRazorpayScript();
+      
+      // Call your backend API to create a new order
+      const orderResponse = await axios.post('/api/payment/create-order', {
+        amount: Math.round(total * 100), // Convert to paise for Razorpay
+      });
+
+      if (!orderResponse.data || !orderResponse.data.id) {
+        toast({
+          title: "Payment Error",
+          description: "Failed to create payment order on the server.",
+          variant: "destructive"
+        });
+        setIsProcessing(false);
+        return;
+      }
+
+      const options = {
+        key: RAZORPAY_KEY_ID,
+        amount: orderResponse.data.amount,
+        currency: orderResponse.data.currency,
+        name: "Sora Gift Store",
+        description: "Purchase from Sora Gold",
+        order_id: orderResponse.data.id,
+        handler: async function (response: any) {
+          // This function is called when the payment is successful
+          toast({
+            title: "Payment Successful!",
+            description: `Payment ID: ${response.razorpay_payment_id}`,
+          });
+          
+          clearCart();
+          setLocation('/account?tab=orders');
+        },
+        prefill: {
+          name: shippingInfo.firstName + ' ' + shippingInfo.lastName,
+          email: shippingInfo.email || user.email,
+          contact: shippingInfo.phone,
+        },
+        theme: {
+          color: "hsl(var(--primary))"
+        }
+      };
+      
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+    } catch (error) {
+      console.error("Payment failed", error);
+      toast({
+        title: "Payment Failed",
+        description: "An error occurred during the payment process. Please try again.",
+        variant: "destructive"
       });
     } finally {
       setIsProcessing(false);
     }
   };
 
+  const handleShippingSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setStep('review');
+  };
+
   const renderStepIndicator = () => (
     <div className="flex items-center justify-center space-x-4 mb-8">
-      <div className={`flex items-center space-x-2 ${step === 'shipping' ? 'text-primary' : step === 'payment' || step === 'review' ? 'text-green-500' : 'text-muted-foreground'}`}>
-        <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${step === 'shipping' ? 'border-primary bg-primary text-primary-foreground' : step === 'payment' || step === 'review' ? 'border-green-500 bg-green-500 text-white' : 'border-muted-foreground'}`}>
-          {step === 'payment' || step === 'review' ? <Check className="w-4 h-4" /> : '1'}
+      <div className={`flex items-center space-x-2 ${step === 'shipping' ? 'text-primary' : step === 'review' ? 'text-green-500' : 'text-muted-foreground'}`}>
+        <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${step === 'shipping' ? 'border-primary bg-primary text-primary-foreground' : step === 'review' ? 'border-green-500 bg-green-500 text-white' : 'border-muted-foreground'}`}>
+          {step === 'review' ? <Check className="w-4 h-4" /> : '1'}
         </div>
         <span className="font-medium">Shipping</span>
       </div>
       
-      <div className={`w-8 h-0.5 ${step === 'payment' || step === 'review' ? 'bg-green-500' : 'bg-muted-foreground'}`}></div>
-      
-      <div className={`flex items-center space-x-2 ${step === 'payment' ? 'text-primary' : step === 'review' ? 'text-green-500' : 'text-muted-foreground'}`}>
-        <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${step === 'payment' ? 'border-primary bg-primary text-primary-foreground' : step === 'review' ? 'border-green-500 bg-green-500 text-white' : 'border-muted-foreground'}`}>
-          {step === 'review' ? <Check className="w-4 h-4" /> : '2'}
-        </div>
-        <span className="font-medium">Payment</span>
-      </div>
-      
-      <div className={`w-8 h-0.5 ${step === 'review' ? 'bg-primary' : 'bg-muted-foreground'}`}></div>
+      <div className={`w-8 h-0.5 ${step === 'review' ? 'bg-green-500' : 'bg-muted-foreground'}`}></div>
       
       <div className={`flex items-center space-x-2 ${step === 'review' ? 'text-primary' : 'text-muted-foreground'}`}>
         <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center ${step === 'review' ? 'border-primary bg-primary text-primary-foreground' : 'border-muted-foreground'}`}>
-          3
+          2
         </div>
-        <span className="font-medium">Review</span>
+        <span className="font-medium">Review & Payment</span>
       </div>
     </div>
   );
@@ -162,6 +170,9 @@ export default function Checkout() {
   return (
     <div className="pt-20" data-testid="page-checkout">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Helmet>
+            <title>Checkout | Sora Gift Store</title>
+        </Helmet>
         {/* Header */}
         <div className="flex items-center mb-8">
           <Link href="/cart">
@@ -208,32 +219,6 @@ export default function Checkout() {
                       />
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="email">Email *</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={shippingInfo.email}
-                        onChange={(e) => setShippingInfo(prev => ({ ...prev, email: e.target.value }))}
-                        required
-                        data-testid="input-email"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="phone">Phone Number *</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        value={shippingInfo.phone}
-                        onChange={(e) => setShippingInfo(prev => ({ ...prev, phone: e.target.value }))}
-                        required
-                        data-testid="input-phone"
-                      />
-                    </div>
-                  </div>
-
                   <div>
                     <Label htmlFor="address">Address *</Label>
                     <Input
@@ -245,7 +230,7 @@ export default function Checkout() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="city">City *</Label>
                       <Input
@@ -258,22 +243,17 @@ export default function Checkout() {
                     </div>
                     <div>
                       <Label htmlFor="state">State *</Label>
-                      <Select 
-                        value={shippingInfo.state} 
-                        onValueChange={(value) => setShippingInfo(prev => ({ ...prev, state: value }))}
-                      >
-                        <SelectTrigger data-testid="select-state">
-                          <SelectValue placeholder="Select state" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="CA">California</SelectItem>
-                          <SelectItem value="NY">New York</SelectItem>
-                          <SelectItem value="TX">Texas</SelectItem>
-                          <SelectItem value="FL">Florida</SelectItem>
-                          {/* Add more states as needed */}
-                        </SelectContent>
-                      </Select>
+                      <Input
+                        id="state"
+                        value={shippingInfo.state}
+                        onChange={(e) => setShippingInfo(prev => ({ ...prev, state: e.target.value }))}
+                        required
+                        data-testid="input-state"
+                      />
                     </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="zipCode">ZIP Code *</Label>
                       <Input
@@ -284,113 +264,20 @@ export default function Checkout() {
                         data-testid="input-zip"
                       />
                     </div>
+                    <div>
+                      <Label htmlFor="country">Country *</Label>
+                      <Input
+                        id="country"
+                        value={shippingInfo.country}
+                        onChange={(e) => setShippingInfo(prev => ({ ...prev, country: e.target.value }))}
+                        required
+                        data-testid="input-country"
+                      />
+                    </div>
                   </div>
-
                   <Button type="submit" className="btn-primary w-full" data-testid="button-continue-payment">
-                    Continue to Payment
+                    Continue to Review
                   </Button>
-                </form>
-              </div>
-            )}
-
-            {step === 'payment' && (
-              <div className="glass-card p-8 rounded-2xl" data-testid="payment-form">
-                <div className="flex items-center mb-6">
-                  <CreditCard className="w-6 h-6 text-primary mr-3" />
-                  <h2 className="text-xl font-serif font-bold">Payment Information</h2>
-                </div>
-                
-                <form onSubmit={handlePaymentSubmit} className="space-y-6">
-                  <div>
-                    <Label htmlFor="nameOnCard">Name on Card *</Label>
-                    <Input
-                      id="nameOnCard"
-                      value={paymentInfo.nameOnCard}
-                      onChange={(e) => setPaymentInfo(prev => ({ ...prev, nameOnCard: e.target.value }))}
-                      required
-                      data-testid="input-name-on-card"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="cardNumber">Card Number *</Label>
-                    <Input
-                      id="cardNumber"
-                      placeholder="1234 5678 9012 3456"
-                      value={paymentInfo.cardNumber}
-                      onChange={(e) => setPaymentInfo(prev => ({ ...prev, cardNumber: e.target.value }))}
-                      required
-                      data-testid="input-card-number"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="expiryDate">Expiry Date *</Label>
-                      <Input
-                        id="expiryDate"
-                        placeholder="MM/YY"
-                        value={paymentInfo.expiryDate}
-                        onChange={(e) => setPaymentInfo(prev => ({ ...prev, expiryDate: e.target.value }))}
-                        required
-                        data-testid="input-expiry"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cvv">CVV *</Label>
-                      <Input
-                        id="cvv"
-                        placeholder="123"
-                        value={paymentInfo.cvv}
-                        onChange={(e) => setPaymentInfo(prev => ({ ...prev, cvv: e.target.value }))}
-                        required
-                        data-testid="input-cvv"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="billingAddressSame"
-                      checked={paymentInfo.billingAddressSame}
-                      onCheckedChange={(checked) => setPaymentInfo(prev => ({ ...prev, billingAddressSame: checked as boolean }))}
-                      data-testid="checkbox-billing-same"
-                    />
-                    <Label htmlFor="billingAddressSame">Billing address is the same as shipping address</Label>
-                  </div>
-
-                  {!paymentInfo.billingAddressSame && (
-                    <div className="space-y-4 pt-4 border-t border-border">
-                      <h3 className="font-semibold">Billing Address</h3>
-                      {/* Billing address form fields similar to shipping */}
-                      <div>
-                        <Label htmlFor="billingAddress">Billing Address *</Label>
-                        <Input
-                          id="billingAddress"
-                          value={billingInfo.address}
-                          onChange={(e) => setBillingInfo(prev => ({ ...prev, address: e.target.value }))}
-                          required={!paymentInfo.billingAddressSame}
-                          data-testid="input-billing-address"
-                        />
-                      </div>
-                      {/* Add more billing fields as needed */}
-                    </div>
-                  )}
-
-                  <div className="flex space-x-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setStep('shipping')}
-                      className="flex-1"
-                      data-testid="button-back-shipping"
-                    >
-                      Back to Shipping
-                    </Button>
-                    <Button type="submit" className="btn-primary flex-1" data-testid="button-review-order">
-                      Review Order
-                    </Button>
-                  </div>
                 </form>
               </div>
             )}
@@ -399,7 +286,11 @@ export default function Checkout() {
               <div className="glass-card p-8 rounded-2xl" data-testid="order-review">
                 <div className="flex items-center mb-6">
                   <Shield className="w-6 h-6 text-primary mr-3" />
-                  <h2 className="text-xl font-serif font-bold">Review Your Order</h2>
+                  <h2 className="text-xl font-serif font-bold">Review Your Order & Payment</h2>
+                </div>
+                <div className="flex items-center space-x-2 my-4">
+                    <CreditCard className="w-6 h-6 text-primary" />
+                    <h3 className="font-semibold text-lg">Payment Method: Razorpay</h3>
                 </div>
 
                 {/* Order Items */}
@@ -435,36 +326,25 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                {/* Payment Information */}
-                <div className="mb-6">
-                  <h3 className="font-semibold mb-3">Payment Information</h3>
-                  <div className="p-4 bg-muted/20 rounded-lg">
-                    <p>**** **** **** {paymentInfo.cardNumber.slice(-4)}</p>
-                    <p>{paymentInfo.nameOnCard}</p>
-                  </div>
+                <div className="flex space-x-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setStep('shipping')}
+                    className="flex-1"
+                    data-testid="button-back-shipping"
+                  >
+                    Back to Shipping
+                  </Button>
+                  <Button
+                    onClick={handlePayment}
+                    className="btn-primary flex-1"
+                    disabled={isProcessing}
+                    data-testid="button-place-order"
+                  >
+                    {isProcessing ? 'Processing...' : `Pay $${total.toFixed(2)}`}
+                  </Button>
                 </div>
-
-                <form onSubmit={handleOrderSubmit}>
-                  <div className="flex space-x-4">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setStep('payment')}
-                      className="flex-1"
-                      data-testid="button-back-payment"
-                    >
-                      Back to Payment
-                    </Button>
-                    <Button 
-                      type="submit" 
-                      className="btn-primary flex-1"
-                      disabled={isProcessing}
-                      data-testid="button-place-order"
-                    >
-                      {isProcessing ? 'Processing...' : 'Place Order'}
-                    </Button>
-                  </div>
-                </form>
               </div>
             )}
           </div>
