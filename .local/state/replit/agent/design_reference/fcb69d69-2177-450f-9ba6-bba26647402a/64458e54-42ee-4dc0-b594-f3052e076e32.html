@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sora - Gift Store for All | Premium Magical Gifts</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+        theme: {
+            extend: {
+                borderRadius: {
+                    lg: "var(--radius)",
+                    md: "calc(var(--radius) - 2px)",
+                    sm: "calc(var(--radius) - 4px)",
+                },
+                colors: {
+                    background: "var(--background)",
+                    foreground: "var(--foreground)",
+                    card: {
+                        DEFAULT: "var(--card)",
+                        foreground: "var(--card-foreground)",
+                    },
+                    primary: {
+                        DEFAULT: "var(--primary)",
+                        foreground: "var(--primary-foreground)",
+                    },
+                    secondary: {
+                        DEFAULT: "var(--secondary)",
+                        foreground: "var(--secondary-foreground)",
+                    },
+                    muted: {
+                        DEFAULT: "var(--muted)",
+                        foreground: "var(--muted-foreground)",
+                    },
+                    accent: {
+                        DEFAULT: "var(--accent)",
+                        foreground: "var(--accent-foreground)",
+                    },
+                    border: "var(--border)",
+                    ring: "var(--ring)",
+                },
+                fontFamily: {
+                    sans: ["var(--font-sans)"],
+                    serif: ["var(--font-serif)"],
+                },
+                animation: {
+                    'sparkle': 'sparkle 3s ease-in-out infinite',
+                    'float': 'float 6s ease-in-out infinite',
+                    'shimmer': 'shimmer 2s ease-in-out infinite alternate',
+                    'heartbeat': 'heartbeat 1.5s ease-in-out infinite',
+                    'confetti-fall': 'confetti-fall 3s linear infinite',
+                    'glow': 'glow 2s ease-in-out infinite alternate',
+                }
+            }
+        }
+    };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --background: hsl(42 15% 97%);
+            --foreground: hsl(20 14.3% 4.1%);
+            --card: hsl(0 0% 100%);
+            --card-foreground: hsl(20 14.3% 4.1%);
+            --primary: hsl(45 93% 47%);
+            --primary-foreground: hsl(20 14.3% 4.1%);
+            --secondary: hsl(348 83% 47%);
+            --secondary-foreground: hsl(0 0% 100%);
+            --muted: hsl(60 4.8% 95.9%);
+            --muted-foreground: hsl(25 5.3% 44.7%);
+            --accent: hsl(45 93% 47%);
+            --accent-foreground: hsl(20 14.3% 4.1%);
+            --border: hsl(20 5.9% 90%);
+            --ring: hsl(45 93% 47%);
+            --font-sans: 'Montserrat', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --radius: 0.75rem;
+        }
+
+        .dark {
+            --background: hsl(0 0% 3.1%);
+            --foreground: hsl(0 0% 98%);
+            --card: hsl(0 0% 7%);
+            --card-foreground: hsl(0 0% 98%);
+            --primary: hsl(45 93% 47%);
+            --primary-foreground: hsl(0 0% 3.1%);
+            --secondary: hsl(348 83% 47%);
+            --secondary-foreground: hsl(0 0% 100%);
+            --muted: hsl(0 0% 14.9%);
+            --muted-foreground: hsl(0 0% 63.9%);
+            --accent: hsl(45 93% 47%);
+            --accent-foreground: hsl(0 0% 3.1%);
+            --border: hsl(0 0% 14.9%);
+            --ring: hsl(45 93% 47%);
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: hsl(var(--background));
+            color: hsl(var(--foreground));
+            transition: all 0.3s ease;
+        }
+
+        .font-serif {
+            font-family: var(--font-serif);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .dark .glass-card {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes shimmer {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(244, 196, 48, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(244, 196, 48, 0.8); }
+        }
+
+        .sparkle-bg::before {
+            content: '✨';
+            position: absolute;
+            animation: sparkle 3s ease-in-out infinite;
+            font-size: 1.5rem;
+        }
+
+        .sparkle-bg::after {
+            content: '⭐';
+            position: absolute;
+            animation: sparkle 3s ease-in-out infinite 1.5s;
+            font-size: 1rem;
+            right: 20px;
+            top: 30px;
+        }
+
+        .confetti-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--secondary)));
+            animation: confetti-fall 3s linear infinite;
+            opacity: 0;
+        }
+
+        .confetti-particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .confetti-particle:nth-child(2) { left: 20%; animation-delay: 0.5s; background: hsl(var(--accent)); }
+        .confetti-particle:nth-child(3) { left: 30%; animation-delay: 1s; }
+        .confetti-particle:nth-child(4) { left: 40%; animation-delay: 1.5s; background: hsl(var(--secondary)); }
+        .confetti-particle:nth-child(5) { left: 50%; animation-delay: 2s; }
+        .confetti-particle:nth-child(6) { left: 60%; animation-delay: 0.8s; background: hsl(var(--primary)); }
+        .confetti-particle:nth-child(7) { left: 70%; animation-delay: 1.2s; }
+        .confetti-particle:nth-child(8) { left: 80%; animation-delay: 2.5s; background: hsl(var(--accent)); }
+        .confetti-particle:nth-child(9) { left: 90%; animation-delay: 1.8s; }
+
+        .product-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+            color: hsl(var(--primary-foreground));
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            animation: glow 0.5s ease-in-out;
+            transform: translateY(-2px);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, 
+                hsl(var(--background)) 0%, 
+                rgba(244, 196, 48, 0.1) 50%, 
+                hsl(var(--background)) 100%);
+        }
+
+        .dark .hero-gradient {
+            background: linear-gradient(135deg, 
+                hsl(var(--background)) 0%, 
+                rgba(244, 196, 48, 0.05) 50%, 
+                hsl(var(--background)) 100%);
+        }
+
+        .nav-blur {
+            background: rgba(255, 248, 240, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(244, 196, 48, 0.2);
+        }
+
+        .dark .nav-blur {
+            background: rgba(8, 8, 8, 0.9);
+            border-bottom: 1px solid rgba(244, 196, 48, 0.3);
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: hsl(var(--muted));
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: hsl(var(--primary));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: hsl(var(--accent));
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Background Confetti Animation -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+        <div class="confetti-particle"></div>
+    </div>
+
+    <!-- Navigation Header -->
+    <!-- @COMPONENT: NavigationHeader [sticky navigation with dark mode toggle] -->
+    <nav class="fixed top-0 w-full z-50 nav-blur">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="text-2xl animate-sparkle">✨</div>
+                    <div>
+                        <h1 class="text-xl font-serif font-bold text-primary">Sora</h1>
+                        <p class="text-xs text-muted-foreground -mt-1">Gift Store for All</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-foreground hover:text-primary transition-colors duration-200">Home</a>
+                    <a href="#products" class="text-foreground hover:text-primary transition-colors duration-200">Products</a>
+                    <a href="#categories" class="text-foreground hover:text-primary transition-colors duration-200">Categories</a>
+                    <a href="#about" class="text-foreground hover:text-primary transition-colors duration-200">About</a>
+                </div>
+
+                <!-- User Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search Icon -->
+                    <button class="text-foreground hover:text-primary transition-colors duration-200">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+
+                    <!-- Wishlist with heartbeat animation -->
+                    <button class="relative text-foreground hover:text-secondary transition-colors duration-200" data-mock="true">
+                        <i class="far fa-heart text-lg animate-heartbeat"></i>
+                        <span class="absolute -top-2 -right-2 bg-secondary text-secondary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center" data-bind="wishlist.count">3</span>
+                    </button>
+
+                    <!-- Shopping Cart -->
+                    <button class="relative text-foreground hover:text-primary transition-colors duration-200" data-mock="true">
+                        <i class="fas fa-shopping-bag text-lg"></i>
+                        <span class="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs rounded-full w-5 h-5 flex items-center justify-center" data-bind="cart.itemCount">2</span>
+                    </button>
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="darkModeToggle" class="text-foreground hover:text-primary transition-colors duration-200">
+                        <i class="fas fa-moon text-lg"></i>
+                    </button>
+
+                    <!-- User Profile -->
+                    <button class="text-foreground hover:text-primary transition-colors duration-200">
+                        <i class="fas fa-user-circle text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: NavigationHeader -->
+
+    <!-- Main Content -->
+    <main class="pt-16 relative z-10">
+        
+        <!-- Hero Section -->
+        <!-- @COMPONENT: HeroSection [main landing area with featured content] -->
+        <section id="home" class="relative overflow-hidden hero-gradient">
+            <div class="sparkle-bg absolute top-10 left-10"></div>
+            <div class="sparkle-bg absolute top-20 right-20"></div>
+            <div class="sparkle-bg absolute bottom-20 left-1/4"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+                <div class="text-center mb-16">
+                    <div class="animate-float inline-block mb-6">
+                        <div class="text-6xl mb-4">🎁</div>
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-serif font-bold text-foreground mb-6 animate-shimmer">
+                        Magical Gifts for<br/>
+                        <span class="text-primary">Every Celebration</span>
+                    </h1>
+                    <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                        Discover premium, handcrafted gifts that create unforgettable moments and spread joy to your loved ones.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button class="btn-primary px-8 py-4 rounded-lg font-semibold text-lg hover:shadow-lg" data-event="click:exploreProducts">
+                            Explore Collection
+                        </button>
+                        <button class="glass-card px-8 py-4 rounded-lg font-semibold text-lg text-foreground hover:scale-105 transition-all duration-200">
+                            Gift Finder
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div class="glass-card p-6 rounded-xl animate-float" style="animation-delay: 0.5s;">
+                        <div class="text-3xl font-bold text-primary" data-bind="stats.products">500+</div>
+                        <div class="text-muted-foreground">Unique Gifts</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl animate-float" style="animation-delay: 1s;">
+                        <div class="text-3xl font-bold text-primary" data-bind="stats.customers">10K+</div>
+                        <div class="text-muted-foreground">Happy Customers</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl animate-float" style="animation-delay: 1.5s;">
+                        <div class="text-3xl font-bold text-primary" data-bind="stats.countries">50+</div>
+                        <div class="text-muted-foreground">Countries</div>
+                    </div>
+                    <div class="glass-card p-6 rounded-xl animate-float" style="animation-delay: 2s;">
+                        <div class="text-3xl font-bold text-primary" data-bind="stats.rating">4.9★</div>
+                        <div class="text-muted-foreground">Average Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: HeroSection -->
+
+        <!-- Featured Categories -->
+        <!-- @COMPONENT: FeaturedCategories [category showcase with elegant cards] -->
+        <section class="py-20 bg-muted/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-foreground mb-4">Shop by Category</h2>
+                    <p class="text-lg text-muted-foreground">Find the perfect gift for every occasion</p>
+                </div>
+
+                <!-- @MAP: categories.map(category => ( -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="glass-card product-card p-6 rounded-2xl text-center group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center text-2xl">
+                            🎂
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2" data-bind="category.name">Birthday Gifts</h3>
+                        <p class="text-muted-foreground text-sm" data-bind="category.description">Celebrate special moments</p>
+                        <div class="mt-4 text-primary font-semibold group-hover:underline" data-bind="category.productCount">120+ items</div>
+                    </div>
+
+                    <div class="glass-card product-card p-6 rounded-2xl text-center group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-secondary to-primary flex items-center justify-center text-2xl">
+                            💝
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2" data-bind="category.name">Anniversary</h3>
+                        <p class="text-muted-foreground text-sm" data-bind="category.description">Love & Romance</p>
+                        <div class="mt-4 text-primary font-semibold group-hover:underline" data-bind="category.productCount">85+ items</div>
+                    </div>
+
+                    <div class="glass-card product-card p-6 rounded-2xl text-center group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-accent to-secondary flex items-center justify-center text-2xl">
+                            🌸
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2" data-bind="category.name">Festivals</h3>
+                        <p class="text-muted-foreground text-sm" data-bind="category.description">Traditional celebrations</p>
+                        <div class="mt-4 text-primary font-semibold group-hover:underline" data-bind="category.productCount">200+ items</div>
+                    </div>
+
+                    <div class="glass-card product-card p-6 rounded-2xl text-center group cursor-pointer">
+                        <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center text-2xl">
+                            💼
+                        </div>
+                        <h3 class="font-semibold text-lg mb-2" data-bind="category.name">Corporate</h3>
+                        <p class="text-muted-foreground text-sm" data-bind="category.description">Professional gifting</p>
+                        <div class="mt-4 text-primary font-semibold group-hover:underline" data-bind="category.productCount">75+ items</div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+        </section>
+        <!-- @END_COMPONENT: FeaturedCategories -->
+
+        <!-- Featured Products Carousel -->
+        <!-- @COMPONENT: FeaturedProducts [product showcase with carousel functionality] -->
+        <section id="products" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-foreground mb-4">Featured Products</h2>
+                    <p class="text-lg text-muted-foreground">Handpicked premium gifts that create magical moments</p>
+                </div>
+
+                <!-- Product Grid -->
+                <!-- @MAP: featuredProducts.map(product => ( -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product Card 1 -->
+                    <div class="glass-card product-card rounded-2xl overflow-hidden group" data-mock="true">
+                        <div class="relative overflow-hidden">
+                            <!-- Premium chocolate gift box with golden ribbon and elegant packaging -->
+                            <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                                 alt="Premium chocolate gift box" 
+                                 class="product-image w-full h-64 object-cover" />
+                            
+                            <!-- Quick Actions Overlay -->
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200" data-event="click:quickView">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 animate-heartbeat" data-event="click:toggleWishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <!-- Badge -->
+                            <div class="absolute top-4 left-4 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                                Bestseller
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="mb-2">
+                                <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200" data-bind="product.name">
+                                    Luxury Chocolate Collection
+                                </h3>
+                                <p class="text-muted-foreground text-sm" data-bind="product.description">
+                                    Handcrafted Belgian chocolates in elegant packaging
+                                </p>
+                            </div>
+
+                            <!-- Rating -->
+                            <div class="flex items-center mb-3" data-bind="product.rating">
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                </div>
+                                <span class="text-muted-foreground text-xs ml-2">(127 reviews)</span>
+                            </div>
+
+                            <!-- Price and Actions -->
+                            <div class="flex items-center justify-between">
+                                <div class="text-lg font-bold text-foreground">
+                                    <span data-bind="product.price">$89.99</span>
+                                    <span class="text-sm text-muted-foreground line-through ml-2" data-bind="product.originalPrice">$119.99</span>
+                                </div>
+                                <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg" data-event="click:addToCart">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 2 -->
+                    <div class="glass-card product-card rounded-2xl overflow-hidden group" data-mock="true">
+                        <div class="relative overflow-hidden">
+                            <!-- Elegant flower bouquet arrangement with roses and lilies -->
+                            <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                                 alt="Premium flower bouquet" 
+                                 class="product-image w-full h-64 object-cover" />
+                            
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 animate-heartbeat">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <div class="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                                Premium
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="mb-2">
+                                <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                                    Royal Rose Bouquet
+                                </h3>
+                                <p class="text-muted-foreground text-sm">
+                                    Fresh roses with premium packaging and care card
+                                </p>
+                            </div>
+
+                            <div class="flex items-center mb-3">
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star-half-alt text-xs"></i>
+                                </div>
+                                <span class="text-muted-foreground text-xs ml-2">(89 reviews)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="text-lg font-bold text-foreground">
+                                    $64.99
+                                </div>
+                                <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 3 -->
+                    <div class="glass-card product-card rounded-2xl overflow-hidden group" data-mock="true">
+                        <div class="relative overflow-hidden">
+                            <!-- Personalized jewelry gift box with necklace and earrings -->
+                            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                                 alt="Jewelry gift set" 
+                                 class="product-image w-full h-64 object-cover" />
+                            
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 animate-heartbeat">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <div class="absolute top-4 left-4 bg-accent text-accent-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                                Limited
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="mb-2">
+                                <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                                    Elegant Jewelry Set
+                                </h3>
+                                <p class="text-muted-foreground text-sm">
+                                    Sterling silver necklace and earrings with personalization
+                                </p>
+                            </div>
+
+                            <div class="flex items-center mb-3">
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                </div>
+                                <span class="text-muted-foreground text-xs ml-2">(203 reviews)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="text-lg font-bold text-foreground">
+                                    $149.99
+                                    <span class="text-sm text-muted-foreground line-through ml-2">$199.99</span>
+                                </div>
+                                <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Card 4 -->
+                    <div class="glass-card product-card rounded-2xl overflow-hidden group" data-mock="true">
+                        <div class="relative overflow-hidden">
+                            <!-- Luxury spa gift basket with aromatherapy products -->
+                            <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                                 alt="Spa gift basket" 
+                                 class="product-image w-full h-64 object-cover" />
+                            
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 animate-heartbeat">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <div class="absolute top-4 left-4 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                                New
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="mb-2">
+                                <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                                    Luxury Spa Collection
+                                </h3>
+                                <p class="text-muted-foreground text-sm">
+                                    Complete aromatherapy and wellness gift basket
+                                </p>
+                            </div>
+
+                            <div class="flex items-center mb-3">
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="far fa-star text-xs"></i>
+                                </div>
+                                <span class="text-muted-foreground text-xs ml-2">(45 reviews)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="text-lg font-bold text-foreground">
+                                    $79.99
+                                </div>
+                                <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_MAP )) -->
+
+                <!-- View All Products Button -->
+                <div class="text-center mt-12">
+                    <button class="glass-card px-8 py-4 rounded-lg font-semibold text-lg text-foreground hover:scale-105 transition-all duration-200">
+                        View All Products <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: FeaturedProducts -->
+
+        <!-- Shopping Cart Sidebar (Hidden by default) -->
+        <!-- @COMPONENT: ShoppingCartSidebar [slide-out cart with product management] -->
+        <div id="cartSidebar" class="fixed right-0 top-0 h-full w-96 bg-card border-l border-border transform translate-x-full transition-transform duration-300 z-50 shadow-2xl">
+            <div class="p-6 border-b border-border">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-serif font-bold text-foreground">Shopping Cart</h2>
+                    <button id="closeCart" class="text-muted-foreground hover:text-foreground">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="p-6 space-y-4 overflow-y-auto h-[calc(100%-200px)]">
+                <!-- @MAP: cartItems.map(item => ( -->
+                <!-- Cart Item 1 -->
+                <div class="flex items-center space-x-4 glass-card p-4 rounded-lg" data-mock="true">
+                    <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                         alt="Chocolate collection" class="w-16 h-16 object-cover rounded-lg" />
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-foreground" data-bind="item.name">Luxury Chocolate Collection</h4>
+                        <p class="text-sm text-muted-foreground" data-bind="item.price">$89.99</p>
+                        <div class="flex items-center mt-2 space-x-2">
+                            <button class="w-8 h-8 bg-muted rounded-full flex items-center justify-center text-sm" data-event="click:decreaseQuantity">-</button>
+                            <span class="px-3 py-1 bg-background rounded" data-bind="item.quantity">1</span>
+                            <button class="w-8 h-8 bg-muted rounded-full flex items-center justify-center text-sm" data-event="click:increaseQuantity">+</button>
+                        </div>
+                    </div>
+                    <button class="text-muted-foreground hover:text-secondary" data-event="click:removeFromCart">
+                        <i class="fas fa-trash text-sm"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Item 2 -->
+                <div class="flex items-center space-x-4 glass-card p-4 rounded-lg" data-mock="true">
+                    <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=100" 
+                         alt="Jewelry set" class="w-16 h-16 object-cover rounded-lg" />
+                    <div class="flex-1">
+                        <h4 class="font-semibold text-foreground">Elegant Jewelry Set</h4>
+                        <p class="text-sm text-muted-foreground">$149.99</p>
+                        <div class="flex items-center mt-2 space-x-2">
+                            <button class="w-8 h-8 bg-muted rounded-full flex items-center justify-center text-sm">-</button>
+                            <span class="px-3 py-1 bg-background rounded">1</span>
+                            <button class="w-8 h-8 bg-muted rounded-full flex items-center justify-center text-sm">+</button>
+                        </div>
+                    </div>
+                    <button class="text-muted-foreground hover:text-secondary">
+                        <i class="fas fa-trash text-sm"></i>
+                    </button>
+                </div>
+                <!-- @END_MAP )) -->
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="absolute bottom-0 left-0 right-0 p-6 bg-card border-t border-border">
+                <div class="space-y-3">
+                    <div class="flex justify-between text-foreground">
+                        <span>Subtotal:</span>
+                        <span data-bind="cart.subtotal">$239.98</span>
+                    </div>
+                    <div class="flex justify-between text-foreground font-semibold text-lg">
+                        <span>Total:</span>
+                        <span data-bind="cart.total">$239.98</span>
+                    </div>
+                    <button class="btn-primary w-full py-3 rounded-lg font-semibold" data-event="click:proceedToCheckout">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- @END_COMPONENT: ShoppingCartSidebar -->
+
+        <!-- User Account/Profile Section -->
+        <!-- @COMPONENT: UserAccountSection [user dashboard with orders, wishlist, profile] -->
+        <section class="py-20 bg-muted/20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-foreground mb-4">Your Account</h2>
+                    <p class="text-lg text-muted-foreground">Manage your orders, wishlist, and preferences</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Profile Card -->
+                    <div class="glass-card p-8 rounded-2xl">
+                        <div class="text-center mb-6">
+                            <div class="w-20 h-20 mx-auto bg-primary rounded-full flex items-center justify-center text-2xl text-primary-foreground mb-4">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3 class="text-xl font-serif font-bold text-foreground" data-bind="user.name" data-mock="true">Sarah Johnson</h3>
+                            <p class="text-muted-foreground" data-bind="user.email" data-mock="true">sarah.j@example.com</p>
+                        </div>
+                        
+                        <!-- Quick Stats -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-primary" data-bind="user.stats.orders" data-mock="true">12</div>
+                                <div class="text-sm text-muted-foreground">Total Orders</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-secondary" data-bind="user.stats.wishlistItems" data-mock="true">8</div>
+                                <div class="text-sm text-muted-foreground">Wishlist Items</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <button class="w-full glass-card p-3 rounded-lg text-left hover:bg-accent/10 transition-colors duration-200" data-event="click:editProfile">
+                                <i class="fas fa-edit mr-3 text-primary"></i>Edit Profile
+                            </button>
+                            <button class="w-full glass-card p-3 rounded-lg text-left hover:bg-accent/10 transition-colors duration-200" data-event="click:changePassword">
+                                <i class="fas fa-lock mr-3 text-primary"></i>Change Password
+                            </button>
+                            <!-- @STATE: isDarkMode:boolean -->
+                            <button class="w-full glass-card p-3 rounded-lg text-left hover:bg-accent/10 transition-colors duration-200" data-event="click:toggleDarkMode">
+                                <i class="fas fa-moon mr-3 text-primary"></i>Dark Mode Toggle
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders -->
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-xl font-serif font-bold text-foreground mb-6">Recent Orders</h3>
+                        
+                        <!-- @MAP: recentOrders.map(order => ( -->
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-primary pl-4" data-mock="true">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h4 class="font-semibold text-foreground" data-bind="order.id">Order #12034</h4>
+                                        <p class="text-sm text-muted-foreground" data-bind="order.date">Dec 15, 2023</p>
+                                    </div>
+                                    <span class="bg-primary text-primary-foreground px-2 py-1 rounded text-xs" data-bind="order.status">Delivered</span>
+                                </div>
+                                <p class="text-sm text-muted-foreground mb-2" data-bind="order.items">3 items</p>
+                                <p class="text-primary font-semibold" data-bind="order.total">$189.97</p>
+                            </div>
+
+                            <div class="border-l-4 border-accent pl-4" data-mock="true">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h4 class="font-semibold text-foreground">Order #11987</h4>
+                                        <p class="text-sm text-muted-foreground">Dec 10, 2023</p>
+                                    </div>
+                                    <span class="bg-accent text-accent-foreground px-2 py-1 rounded text-xs">Shipped</span>
+                                </div>
+                                <p class="text-sm text-muted-foreground mb-2">2 items</p>
+                                <p class="text-primary font-semibold">$124.98</p>
+                            </div>
+
+                            <div class="border-l-4 border-secondary pl-4" data-mock="true">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h4 class="font-semibold text-foreground">Order #11956</h4>
+                                        <p class="text-sm text-muted-foreground">Dec 8, 2023</p>
+                                    </div>
+                                    <span class="bg-secondary text-secondary-foreground px-2 py-1 rounded text-xs">Processing</span>
+                                </div>
+                                <p class="text-sm text-muted-foreground mb-2">1 item</p>
+                                <p class="text-primary font-semibold">$79.99</p>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+
+                        <button class="w-full mt-6 glass-card p-3 rounded-lg hover:bg-accent/10 transition-colors duration-200 text-center" data-event="click:viewAllOrders">
+                            View All Orders <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+
+                    <!-- Wishlist -->
+                    <div class="glass-card p-8 rounded-2xl">
+                        <h3 class="text-xl font-serif font-bold text-foreground mb-6">Your Wishlist</h3>
+                        
+                        <!-- @MAP: wishlistItems.map(item => ( -->
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4" data-mock="true">
+                                <img src="https://images.unsplash.com/photo-1520763185298-1b434c919102?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=80" 
+                                     alt="Royal Rose Bouquet" class="w-12 h-12 object-cover rounded-lg" />
+                                <div class="flex-1">
+                                    <h4 class="text-sm font-semibold text-foreground" data-bind="item.name">Royal Rose Bouquet</h4>
+                                    <p class="text-primary text-sm font-semibold" data-bind="item.price">$64.99</p>
+                                </div>
+                                <button class="text-secondary hover:text-secondary/80 animate-heartbeat" data-event="click:removeFromWishlist">
+                                    <i class="fas fa-heart text-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center space-x-4" data-mock="true">
+                                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=80" 
+                                     alt="Spa Collection" class="w-12 h-12 object-cover rounded-lg" />
+                                <div class="flex-1">
+                                    <h4 class="text-sm font-semibold text-foreground">Luxury Spa Collection</h4>
+                                    <p class="text-primary text-sm font-semibold">$79.99</p>
+                                </div>
+                                <button class="text-secondary hover:text-secondary/80 animate-heartbeat">
+                                    <i class="fas fa-heart text-sm"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex items-center space-x-4" data-mock="true">
+                                <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=80" 
+                                     alt="Artisan coffee set" class="w-12 h-12 object-cover rounded-lg" />
+                                <div class="flex-1">
+                                    <h4 class="text-sm font-semibold text-foreground">Artisan Coffee Set</h4>
+                                    <p class="text-primary text-sm font-semibold">$45.99</p>
+                                </div>
+                                <button class="text-secondary hover:text-secondary/80 animate-heartbeat">
+                                    <i class="fas fa-heart text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- @END_MAP )) -->
+
+                        <button class="w-full mt-6 btn-primary p-3 rounded-lg font-semibold text-center" data-event="click:viewFullWishlist">
+                            View Full Wishlist
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: UserAccountSection -->
+
+        <!-- Search and Filter Section -->
+        <!-- @COMPONENT: SearchFilterSection [advanced product search and filtering] -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-foreground mb-4">Find Your Perfect Gift</h2>
+                    <p class="text-lg text-muted-foreground">Advanced search and filters to discover exactly what you need</p>
+                </div>
+
+                <!-- Search and Filter Controls -->
+                <div class="glass-card p-8 rounded-2xl mb-12">
+                    <!-- Search Bar -->
+                    <div class="relative mb-8">
+                        <input type="text" 
+                               placeholder="Search for gifts, occasions, or categories..." 
+                               class="w-full px-6 py-4 pl-12 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-foreground placeholder-muted-foreground"
+                               data-event="input:handleSearch" />
+                        <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"></i>
+                    </div>
+
+                    <!-- Filter Controls -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <!-- Category Filter -->
+                        <!-- @STATE: selectedCategory:string = "all" -->
+                        <div>
+                            <label class="block text-sm font-semibold text-foreground mb-2">Category</label>
+                            <select class="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary text-foreground" data-event="change:handleCategoryFilter">
+                                <option value="all">All Categories</option>
+                                <option value="birthday">Birthday Gifts</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="festivals">Festivals</option>
+                                <option value="corporate">Corporate</option>
+                                <option value="flowers">Flowers</option>
+                                <option value="jewelry">Jewelry</option>
+                                <option value="chocolates">Chocolates</option>
+                                <option value="spa">Spa & Wellness</option>
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <!-- @STATE: priceRange:object = {min: 0, max: 500} -->
+                        <div>
+                            <label class="block text-sm font-semibold text-foreground mb-2">Price Range</label>
+                            <select class="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary text-foreground" data-event="change:handlePriceFilter">
+                                <option value="all">All Prices</option>
+                                <option value="0-50">Under $50</option>
+                                <option value="50-100">$50 - $100</option>
+                                <option value="100-200">$100 - $200</option>
+                                <option value="200-500">$200 - $500</option>
+                                <option value="500+">Over $500</option>
+                            </select>
+                        </div>
+
+                        <!-- Sort By -->
+                        <div>
+                            <label class="block text-sm font-semibold text-foreground mb-2">Sort By</label>
+                            <select class="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary text-foreground" data-event="change:handleSortFilter">
+                                <option value="popular">Most Popular</option>
+                                <option value="newest">Newest First</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="rating">Highest Rated</option>
+                                <option value="name">Alphabetical</option>
+                            </select>
+                        </div>
+
+                        <!-- Availability -->
+                        <div>
+                            <label class="block text-sm font-semibold text-foreground mb-2">Availability</label>
+                            <select class="w-full px-4 py-3 bg-background border border-border rounded-lg focus:ring-2 focus:ring-primary text-foreground" data-event="change:handleAvailabilityFilter">
+                                <option value="all">All Items</option>
+                                <option value="in-stock">In Stock Only</option>
+                                <option value="low-stock">Low Stock</option>
+                                <option value="pre-order">Pre-Order</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Active Filters Display -->
+                    <div class="flex flex-wrap gap-2 mt-6">
+                        <span class="glass-card px-3 py-1 rounded-full text-sm text-foreground flex items-center" data-mock="true">
+                            Birthday Gifts
+                            <button class="ml-2 text-muted-foreground hover:text-foreground">×</button>
+                        </span>
+                        <span class="glass-card px-3 py-1 rounded-full text-sm text-foreground flex items-center" data-mock="true">
+                            $50 - $100
+                            <button class="ml-2 text-muted-foreground hover:text-foreground">×</button>
+                        </span>
+                        <button class="text-sm text-muted-foreground hover:text-foreground" data-event="click:clearAllFilters">
+                            Clear All Filters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <!-- @FUNCTIONALITY: This section should display filtered products based on search criteria -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-foreground">
+                            Search Results <span class="text-muted-foreground" data-bind="searchResults.count">(24 items found)</span>
+                        </h3>
+                        <div class="flex space-x-2">
+                            <button class="glass-card p-2 rounded-lg hover:bg-accent/10" data-event="click:toggleGridView">
+                                <i class="fas fa-th-large text-foreground"></i>
+                            </button>
+                            <button class="glass-card p-2 rounded-lg hover:bg-accent/10" data-event="click:toggleListView">
+                                <i class="fas fa-list text-muted-foreground"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtered Products Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Filtered results would be populated here by React component -->
+                    <!-- @MAP: filteredProducts.map(product => ProductCard component) -->
+                    <div class="glass-card product-card rounded-2xl overflow-hidden group" data-mock="true">
+                        <div class="relative overflow-hidden">
+                            <!-- Personalized gift box with custom message card -->
+                            <img src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                                 alt="Custom gift box" 
+                                 class="product-image w-full h-64 object-cover" />
+                            
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="glass-card p-3 rounded-full text-white hover:bg-white/20 transition-all duration-200 animate-heartbeat">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+
+                            <div class="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold">
+                                Customizable
+                            </div>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="mb-2">
+                                <h3 class="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
+                                    Personalized Gift Box
+                                </h3>
+                                <p class="text-muted-foreground text-sm">
+                                    Custom message card and premium packaging
+                                </p>
+                            </div>
+
+                            <div class="flex items-center mb-3">
+                                <div class="flex text-primary">
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                    <i class="fas fa-star text-xs"></i>
+                                </div>
+                                <span class="text-muted-foreground text-xs ml-2">(156 reviews)</span>
+                            </div>
+
+                            <div class="flex items-center justify-between">
+                                <div class="text-lg font-bold text-foreground">
+                                    $55.99
+                                </div>
+                                <button class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold hover:shadow-lg">
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP -->
+
+                    <!-- Additional search result cards would repeat here -->
+                    <!-- These are just placeholder examples -->
+                    <div class="glass-card product-card rounded-2xl p-6 text-center animate-shimmer" data-mock="true">
+                        <div class="w-full h-32 bg-muted rounded-lg mb-4 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-muted-foreground"></i>
+                        </div>
+                        <div class="h-4 bg-muted rounded mb-2"></div>
+                        <div class="h-3 bg-muted rounded w-3/4 mx-auto mb-4"></div>
+                        <div class="h-8 bg-muted rounded"></div>
+                    </div>
+
+                    <div class="glass-card product-card rounded-2xl p-6 text-center animate-shimmer" data-mock="true" style="animation-delay: 0.2s;">
+                        <div class="w-full h-32 bg-muted rounded-lg mb-4 flex items-center justify-center">
+                            <i class="fas fa-image text-4xl text-muted-foreground"></i>
+                        </div>
+                        <div class="h-4 bg-muted rounded mb-2"></div>
+                        <div class="h-3 bg-muted rounded w-3/4 mx-auto mb-4"></div>
+                        <div class="h-8 bg-muted rounded"></div>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-12">
+                    <div class="glass-card p-2 rounded-lg inline-flex space-x-2">
+                        <button class="px-4 py-2 rounded text-muted-foreground hover:text-foreground hover:bg-accent/10">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="px-4 py-2 rounded bg-primary text-primary-foreground">1</button>
+                        <button class="px-4 py-2 rounded text-foreground hover:bg-accent/10">2</button>
+                        <button class="px-4 py-2 rounded text-foreground hover:bg-accent/10">3</button>
+                        <button class="px-4 py-2 rounded text-foreground hover:bg-accent/10">...</button>
+                        <button class="px-4 py-2 rounded text-foreground hover:bg-accent/10">8</button>
+                        <button class="px-4 py-2 rounded text-muted-foreground hover:text-foreground hover:bg-accent/10">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: SearchFilterSection -->
+
+    </main>
+
+    <!-- Footer -->
+    <!-- @COMPONENT: Footer [site footer with links and information] -->
+    <footer class="bg-card border-t border-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <!-- Brand Column -->
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="text-2xl animate-sparkle">✨</div>
+                        <div>
+                            <h1 class="text-2xl font-serif font-bold text-primary">Sora</h1>
+                            <p class="text-sm text-muted-foreground -mt-1">Gift Store for All</p>
+                        </div>
+                    </div>
+                    <p class="text-muted-foreground mb-6 max-w-md">
+                        Creating magical moments through premium gifts that celebrate life's special occasions. 
+                        Handcrafted with love, delivered with care.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors duration-200">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors duration-200">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors duration-200">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-primary text-primary-foreground rounded-full flex items-center justify-center hover:bg-primary/80 transition-colors duration-200">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="font-serif font-bold text-foreground mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">About Us</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Gift Cards</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Bulk Orders</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Track Order</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Return Policy</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Customer Support -->
+                <div>
+                    <h3 class="font-serif font-bold text-foreground mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Help Center</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Shipping Info</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Size Guide</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">Care Instructions</a></li>
+                        <li><a href="#" class="text-muted-foreground hover:text-primary transition-colors duration-200">FAQs</a></li>
+                        <li class="pt-2">
+                            <p class="text-muted-foreground text-sm">
+                                <i class="fas fa-phone mr-2 text-primary"></i>
+                                +1 (555) 123-4567
+                            </p>
+                            <p class="text-muted-foreground text-sm">
+                                <i class="fas fa-envelope mr-2 text-primary"></i>
+                                hello@soragifts.com
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bottom Bar -->
+            <div class="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-muted-foreground text-sm mb-4 md:mb-0">
+                    © 2023 Sora Gift Store. All rights reserved.
+                </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Privacy Policy</a>
+                    <a href="#" class="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Terms of Service</a>
+                    <a href="#" class="text-muted-foreground hover:text-primary text-sm transition-colors duration-200">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // TODO: Implement React components, Firebase integration, and state management
+        
+        // Dark Mode Toggle Functionality (placeholder)
+        (function() {
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const html = document.documentElement;
+            
+            // Check for saved theme preference or default to 'light'
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            html.classList.toggle('dark', currentTheme === 'dark');
+            
+            darkModeToggle.addEventListener('click', function() {
+                html.classList.toggle('dark');
+                const theme = html.classList.contains('dark') ? 'dark' : 'light';
+                localStorage.setItem('theme', theme);
+                
+                // Update icon
+                const icon = this.querySelector('i');
+                icon.className = theme === 'dark' ? 'fas fa-sun text-lg' : 'fas fa-moon text-lg';
+            });
+        })();
+
+        // Shopping Cart Sidebar Toggle (placeholder)
+        (function() {
+            const cartButtons = document.querySelectorAll('[data-mock="true"]').length > 0 
+                ? [document.querySelector('button[data-mock="true"] i.fa-shopping-bag')?.parentElement]
+                : [];
+            const cartSidebar = document.getElementById('cartSidebar');
+            const closeCart = document.getElementById('closeCart');
+            
+            cartButtons.forEach(button => {
+                if (button) {
+                    button.addEventListener('click', function() {
+                        cartSidebar.classList.remove('translate-x-full');
+                    });
+                }
+            });
+            
+            if (closeCart) {
+                closeCart.addEventListener('click', function() {
+                    cartSidebar.classList.add('translate-x-full');
+                });
+            }
+        })();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add some interactive hover effects
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Placeholder for search functionality
+        const searchInput = document.querySelector('input[placeholder*="Search"]');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                // TODO: Implement real-time search with Firebase
+                console.log('Searching for:', this.value);
+            });
+        }
+
+        // Console message for developers
+        console.log('%c🎁 Sora Gift Store - Premium E-commerce Platform', 'color: #F4C430; font-size: 16px; font-weight: bold;');
+        console.log('%c✨ Built with React + Firebase + TailwindCSS', 'color: #AC1C1C; font-size: 12px;');
+        console.log('%c🌟 Features: Dark Mode, Real-time Cart, Wishlist, Authentication', 'color: #666; font-size: 11px;');
+    </script>
+</body>
+</html>

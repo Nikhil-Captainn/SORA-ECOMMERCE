@@ -1,15 +1,36 @@
-import React from 'react';
+import { useMemo } from "react";
 
 export function SparkleBackground() {
+  const sparkles = useMemo(
+    () =>
+      Array.from({ length: 40 }).map((_, i) => ({
+        id: i,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        size: 4 + Math.random() * 10,
+        delay: Math.random() * 3,
+      })),
+    []
+  );
+
   return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      {/* Sparkle elements */}
-      <div className="absolute top-10 left-10 text-2xl animate-sparkle">✨</div>
-      <div className="absolute top-20 right-20 text-xl animate-sparkle" style={{ animationDelay: '1s' }}>⭐</div>
-      <div className="absolute bottom-20 left-1/4 text-lg animate-sparkle" style={{ animationDelay: '2s' }}>✨</div>
-      <div className="absolute top-1/3 right-1/3 text-xl animate-sparkle" style={{ animationDelay: '1.5s' }}>💫</div>
-      <div className="absolute bottom-1/3 left-1/2 text-lg animate-sparkle" style={{ animationDelay: '0.5s' }}>⭐</div>
-      <div className="absolute top-2/3 right-1/4 text-xl animate-sparkle" style={{ animationDelay: '2.5s' }}>✨</div>
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      {sparkles.map(s => (
+        <span
+          key={s.id}
+          className="block rounded-full animate-sparkle"
+          style={{
+            position: "absolute",
+            left: `${s.left}%`,
+            top: `${s.top}%`,
+            width: s.size,
+            height: s.size,
+            filter: "blur(0.5px)",
+            animationDelay: `${s.delay}s`,
+            background: "radial-gradient(circle, rgba(255,184,77,0.9) 0%, rgba(255,184,77,0.0) 70%)"
+          }}
+        />
+      ))}
     </div>
   );
 }
