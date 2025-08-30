@@ -70,13 +70,12 @@ export interface OrderItem {
 }
 
 export interface User {
-  id: string;
-  email: string;
-  displayName?: string;
-  photoURL?: string;
-  firebaseUid?: string;
-  createdAt: string;
-  updatedAt: string;
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Review {

@@ -13,7 +13,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ open, onOpenChange }: AuthModalProps) {
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, googleSignIn } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('signin');
@@ -42,10 +42,10 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
       });
       onOpenChange(false);
       setSignInData({ email: '', password: '' });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'Sign in failed',
-        description: 'Please check your credentials and try again.',
+        description: error.message || 'Please check your credentials and try again.',
         variant: 'destructive',
       });
     } finally {
@@ -74,10 +74,10 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
       });
       onOpenChange(false);
       setSignUpData({ email: '', password: '', confirmPassword: '', displayName: '' });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: 'Sign up failed',
-        description: 'Please try again with valid information.',
+        description: error.message || 'Please try again with valid information.',
         variant: 'destructive',
       });
     } finally {
@@ -86,11 +86,23 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
   };
 
   const handleGoogleSignIn = async () => {
-    toast({
-      title: 'Google Sign In',
-      description: 'Google sign in is not available in demo mode.',
-      variant: 'destructive',
-    });
+    setLoading(true);
+    try {
+      await googleSignIn();
+      toast({
+        title: 'Welcome back!',
+        description: 'You have successfully signed in with Google.',
+      });
+      onOpenChange(false);
+    } catch (error: any) {
+      toast({
+        title: 'Sign in failed',
+        description: error.message || 'Please try again.',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -132,9 +144,9 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
                   data-testid="input-signin-password"
                 />
               </div>
-              <Button 
-                type="submit" 
-                className="w-full btn-primary" 
+              <Button
+                type="submit"
+                className="w-full btn-primary"
                 disabled={loading}
                 data-testid="button-signin"
               >
@@ -189,9 +201,9 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
                   data-testid="input-signup-confirm"
                 />
               </div>
-              <Button 
-                type="submit" 
-                className="w-full btn-primary" 
+              <Button
+                type="submit"
+                className="w-full btn-primary"
                 disabled={loading}
                 data-testid="button-signup"
               >
