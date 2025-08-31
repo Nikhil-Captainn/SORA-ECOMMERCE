@@ -1,5 +1,7 @@
+// D:\Gift Shop E-Commerce\SoraGold\SoraGold\client\src\lib\firebase.ts
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, GoogleAuthProvider, signInWithPopup, updateProfile } from 'firebase/auth';
+import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDZyzGw_y627GG4_6pfBot7mHAP3y4P-vc",
@@ -14,35 +16,37 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app); // Initialize Firestore
 const googleProvider = new GoogleAuthProvider();
 
 export const authService = {
-  // Signs in a user with email and password
   signInWithEmail: async (email: string, password: string) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     return userCredential.user;
   },
-
-  // Signs up a new user with email and password
   signUpWithEmail: async (email: string, password: string, displayName: string) => {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(userCredential.user, { displayName });
     return userCredential.user;
   },
-
-  // Signs in a user with their Google account
   signInWithGoogle: async () => {
     const result = await signInWithPopup(auth, googleProvider);
     return result.user;
   },
-
-  // Signs out the current user
   signOut: async () => {
     await signOut(auth);
   },
-
-  // Listens for authentication state changes
   onAuthStateChanged: (callback: (user: FirebaseUser | null) => void) => {
     return onAuthStateChanged(auth, callback);
   }
+};
+
+// Add a new service for Firestore
+export const firestoreService = {
+  addSubscriber: async (email: string) => {
+    await addDoc(collection(db, "subscribers"), {
+      email: email,
+      subscribedAt: serverTimestamp(),
+    });
+  },
 };
